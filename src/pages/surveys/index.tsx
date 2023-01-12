@@ -1,4 +1,11 @@
-import { Flex, Grid, Heading, IconButton, Progress } from '@chakra-ui/react';
+import {
+  Flex,
+  Grid,
+  Heading,
+  IconButton,
+  Progress,
+  Text,
+} from '@chakra-ui/react';
 import SurveyItem from '../../components/SurveyItem';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +41,12 @@ const ListAllSurveys = () => {
     >
       <Heading>Todos Questionarios</Heading>
       {loading ? (
-        <Progress w={'80%'} size="md" isIndeterminate />
+        <>
+          <Text>
+            <b>Aviso:</b> O primeiro carregamento pode demorar até 1 minuto.
+          </Text>
+          <Progress w={'40%'} size="md" isIndeterminate />
+        </>
       ) : (
         <Grid
           p={5}
