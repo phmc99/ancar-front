@@ -1,4 +1,5 @@
 import { Button, Flex, GridItem, Heading, Text } from '@chakra-ui/react';
+import Router from 'next/router';
 
 interface SurveyItemProps {
   id: string;
@@ -7,6 +8,10 @@ interface SurveyItemProps {
 }
 
 const SurveyItem = ({ id, name, description }: SurveyItemProps) => {
+  const handleResponsePage = () => {
+    Router.push(`surveys/${id}/response`);
+  };
+
   return (
     <GridItem>
       <Flex
@@ -28,7 +33,9 @@ const SurveyItem = ({ id, name, description }: SurveyItemProps) => {
         >
           {description}
         </Text>
-        <Button colorScheme={'blue'}>Responder</Button>
+        <Button colorScheme={'blue'} onClick={handleResponsePage}>
+          Responder
+        </Button>
       </Flex>
     </GridItem>
   );

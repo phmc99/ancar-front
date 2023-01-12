@@ -1,8 +1,29 @@
-import { Flex, Grid, Heading, IconButton } from '@chakra-ui/react';
+import { Flex, Grid, Heading, IconButton, Progress } from '@chakra-ui/react';
 import SurveyItem from '../../components/SurveyItem';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, AppState } from '../../store';
+import { getSurveys } from '../../store/surveys';
+import { useEffect, useState } from 'react';
 
 const ListAllSurveys = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data, loading } = useSelector((state: AppState) => state.survey);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [page, setPage] = useState<number>(1);
+
+  useEffect(() => {
+    dispatch(getSurveys('/surveys?take=9'));
+  }, [dispatch]);
+
+  const handleNextPage = () => {
+    dispatch(getSurveys(`/surveys?take=9&page=${data?.nextPage}`));
+  };
+
+  const handlePrevPage = () => {
+    dispatch(getSurveys(`/surveys?take=9&page=${data?.prevPage}`));
+  };
+
   return (
     <Flex
       w={'100vw'}
@@ -12,40 +33,41 @@ const ListAllSurveys = () => {
       alignItems={'center'}
     >
       <Heading>Todos Questionarios</Heading>
-      <Grid
-        p={5}
-        w={'90%'}
-        templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
-        gap={6}
-        overflowY={['scroll', 'hidden']}
-      >
-        <SurveyItem
-          name="Survey"
-          id="1"
-          description="TESTESTETEASIJDASIUDASDHAUSDHAUSIDHASUDHUGETNJIJNFSIDJNDUIN"
-        />
-        <SurveyItem
-          name="Survey"
-          id="1"
-          description="TESTESTETEASIJDASIUDASDHAUSDHAUSIDHASUDHUGETNJIJNFSIDJNDUIN"
-        />
-        <SurveyItem
-          name="Survey"
-          id="1"
-          description="TESTESTETEASIJDASIUDASDHAUSDHAUSIDHASUDHUGETNJIJNFSIDJNDUIN"
-        />
-      </Grid>
+      {loading ? (
+        <Progress w={'80%'} size="md" isIndeterminate />
+      ) : (
+        <Grid
+          p={5}
+          w={'90%'}
+          templateColumns={['repeat(1, 1fr)', 'repeat(3, 1fr)']}
+          gap={6}
+          overflowY={['scroll', 'hidden']}
+        >
+          {data?.data.map(item => (
+            <SurveyItem
+              key={item.cod}
+              id={item.cod}
+              description={item.description}
+              name={item.name}
+            />
+          ))}
+        </Grid>
+      )}
       <Flex alignItems={'center'} gap={3}>
         <IconButton
           aria-label="ChangePage"
           bgColor={'transparent'}
           icon={<ArrowLeftIcon />}
+          disabled={data?.prevPage != null ? false : true}
+          onClick={handlePrevPage}
         />
-        <Heading size={'md'}>1</Heading>
+        <Heading size={'md'}>{page}</Heading>
         <IconButton
           aria-label="ChangePage"
           bgColor={'transparent'}
           icon={<ArrowRightIcon />}
+          disabled={data?.nextPage != null ? false : true}
+          onClick={handleNextPage}
         />
       </Flex>
     </Flex>

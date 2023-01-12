@@ -1,6 +1,7 @@
 import { Flex, Text, Textarea } from '@chakra-ui/react';
+import { ISurveyQuestion } from '../../types';
 
-const ResponseBox = () => {
+const ResponseBox = ({ description }: ISurveyQuestion) => {
   return (
     <>
       <Flex
@@ -13,12 +14,7 @@ const ResponseBox = () => {
         gap={2}
         borderRadius={5}
       >
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic, atque
-          quod libero maiores sequi placeat officia cupiditate tempore sapiente
-          odit. Deserunt minima quasi expedita iste beatae, minus illum vel
-          vitae?
-        </Text>
+        <Text>{description}</Text>
         <Textarea placeholder="Responda aqui" />
       </Flex>
     </>

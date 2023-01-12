@@ -6,11 +6,12 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
+import { surveySlice } from './surveys';
 
 const makeStore = () =>
   configureStore({
     reducer: {
-      // [commerceFormSlice.name]: commerceFormSlice.reducer,
+      [surveySlice.name]: surveySlice.reducer,
     },
   });
 
