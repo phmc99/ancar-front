@@ -1,5 +1,5 @@
 export interface ISurvey {
-  cod: string;
+  cod?: string;
   name: string;
   description: string;
   questions: ISurveyQuestion[];

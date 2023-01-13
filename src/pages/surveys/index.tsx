@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   Grid,
   Heading,
@@ -12,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, AppState } from '../../store';
 import { getSurveys } from '../../store/surveys';
 import { useEffect, useState } from 'react';
+import Router from 'next/router';
 
 const ListAllSurveys = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,6 +33,10 @@ const ListAllSurveys = () => {
     dispatch(getSurveys(`/surveys?take=9&page=${data?.prevPage}`));
   };
 
+  const handleCreateNewSurvey = () => {
+    Router.push(`/surveys/create`);
+  };
+
   return (
     <Flex
       w={'100vw'}
@@ -40,6 +46,15 @@ const ListAllSurveys = () => {
       alignItems={'center'}
     >
       <Heading>Todos Questionarios</Heading>
+      <Button
+        onClick={handleCreateNewSurvey}
+        size={'md'}
+        colorScheme="blue"
+        variant={'ghost'}
+      >
+        Criar Questionario
+      </Button>
+
       {loading ? (
         <>
           <Text>
@@ -58,7 +73,7 @@ const ListAllSurveys = () => {
           {data?.data.map(item => (
             <SurveyItem
               key={item.cod}
-              id={item.cod}
+              id={item.cod || ''}
               description={item.description}
               name={item.name}
             />

@@ -1,10 +1,26 @@
 import { Button, CloseButton, Flex, Textarea } from '@chakra-ui/react';
+import { useState } from 'react';
+import { ISurvey } from '../../types';
 
 interface NewSurveyQuestionProps {
+  survey: ISurvey;
+  setSurvey: (survey: ISurvey) => void;
   setToggle: () => void;
 }
 
-const NewSurveyQuestion = ({ setToggle }: NewSurveyQuestionProps) => {
+const NewSurveyQuestion = ({
+  survey,
+  setToggle,
+  setSurvey,
+}: NewSurveyQuestionProps) => {
+  const [question, setQuestion] = useState<string>('');
+
+  const handleAddQuestion = () => {
+    survey.questions = [...survey.questions, { description: question }];
+    setSurvey(survey);
+    setToggle();
+  };
+
   return (
     <>
       <Flex
@@ -35,8 +51,13 @@ const NewSurveyQuestion = ({ setToggle }: NewSurveyQuestionProps) => {
             placeholder="Nova Pergunta"
             variant="filled"
             name="value"
+            onChange={e => setQuestion(e.target.value)}
           />
-          <Button colorScheme="green" alignSelf={'center'} onClick={setToggle}>
+          <Button
+            colorScheme="green"
+            alignSelf={'center'}
+            onClick={handleAddQuestion}
+          >
             Adicionar
           </Button>
         </Flex>
